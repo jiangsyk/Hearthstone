@@ -30,6 +30,7 @@ public class StartMenu : MonoBehaviour
                 else
                     StopMov();
             }
+
         }
         if(isDrawMov != movTexture.isPlaying)
         {
