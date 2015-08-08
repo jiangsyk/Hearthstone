@@ -14,10 +14,18 @@ public class StartMenu : MonoBehaviour
     public bool isDrawMov = true;
     public bool isShowMessage = false;
 
+    public bool isCanShowSelectRole = false;
+    public TweenPosition selectRoleTween;
+
+    public UISprite selectedHero;
+    public GameObject clickLabel;
+
     void Start()
     {
         movTexture.loop = false;
         movTexture.Play();
+
+        logoTween.AddOnFinished(OnLogoFinished);
     }
     void Update()
     {
@@ -35,6 +43,16 @@ public class StartMenu : MonoBehaviour
         if(isDrawMov != movTexture.isPlaying)
         {
             StopMov();
+        }
+
+        if(isCanShowSelectRole && Input.GetMouseButtonDown(0))
+        {
+            selectRoleTween.gameObject.SetActive(true);
+            selectRoleTween.PlayForward();
+            clickLabel.SetActive(false);
+
+
+            isCanShowSelectRole = false;
         }
 
     }
@@ -55,5 +73,16 @@ public class StartMenu : MonoBehaviour
         isDrawMov = false;
         //logo
         logoTween.PlayForward();
+    }
+    private void OnLogoFinished()
+    {
+        isCanShowSelectRole = true;
+    }
+    public void OnClickPlayBtn()
+    {
+        string name1 = selectedHero.spriteName;
+        string name2 = "hero" + Random.Range(1,10);
+        BlackMask.instance.Show();
+        VSShow.instance.Show(name1, name2);
     }
 }

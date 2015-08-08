@@ -12,10 +12,18 @@ public class BlackMask : MonoBehaviour
     void Start()
     {
         instance = this;
-        
+        Hide();
     }
     void Update()
     {
 
+    }
+    public void Show()
+    {
+        gameObject.SetActive(true);
+    }
+    public void Hide()
+    {
+        gameObject.SetActive(false);
     }
 }
