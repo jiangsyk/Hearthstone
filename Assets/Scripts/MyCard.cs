@@ -14,13 +14,18 @@ public class MyCard : MonoBehaviour
     public Transform card01;
     public Transform card02;
 
+    private int startDepth = 10;
     private float xOffset;
     private List<GameObject> cards = new List<GameObject>();
 
-    public void GetCard()
+    public void AddCard(GameObject cardGo)
     {
-        GameObject go = NGUITools.AddChild(gameObject, cardPrefab);
+        GameObject go = cardGo;
+
         Vector3 toPosition = card01.position + new Vector3(xOffset * cards.Count, 0, 0);
+        go.GetComponent<UISprite>().width = 80;
+        go.GetComponent<Card>().SetDepth(startDepth);
+        startDepth += 3;
 
         iTween.MoveTo(go, toPosition, 1f);
         cards.Add(go);
@@ -46,7 +51,6 @@ public class MyCard : MonoBehaviour
     {
         if(Input.GetKeyDown(KeyCode.Q))
         {
-            GetCard();
         }
         if(Input.GetKeyDown(KeyCode.W))
         {

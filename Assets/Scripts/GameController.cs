@@ -1,56 +1,73 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+public enum GameState
+{
+    CardGenerating,//系统随机发放卡牌阶段
+    PlayCard,//出牌阶段
+    End//游戏结束
+}
 /*
  * Description: GameController
  * Author:      JiangShu
- * Create Time: 2015/8/10 9:52:25
+ * Create Time: 2015/8/10 15:10:58
  */
 public class GameController : MonoBehaviour
 {
-    public GameObject cardPrefab;
-    public Transform fromCard;
-    public Transform toCard;
-    public string[] cardNames;
+    public GameState state = GameState.PlayCard;
+    public float cycleTime = 60f;
+    public MyCard myCard;
 
-    public float transformTime = 2f;
-    public int tranformSpeed = 20;
+    public float timer = 0;
+    private UISprite wickpopeSprite;
+    private float wickpopeWidth;
 
-    private bool isTransforming = false;
-    private float timer = 0;
-    private UISprite nowGenerateCard;
+    private string currentHeroName = "hero1";//当前回合对象
+    private CardGenerator cardGenerator;
+
+    void Awake()
+    {
+        wickpopeSprite = this.transform.FindChild("Wickpope").GetComponent<UISprite>();
+        wickpopeWidth = wickpopeSprite.width;
+        wickpopeSprite.width = 0;
+
+        cardGenerator = GetComponent<CardGenerator>();
+    }
     void Start()
     {
-
+        //给当前回合英雄发牌
+        StartCoroutine( GenerateCarForHero1() );
     }
     void Update()
     {
-        if(Input.GetKeyDown(KeyCode.Space))
-        {
-            RandomGenerateCard();
-        }
-        if(isTransforming)
+        if(state == GameState.PlayCard)
         {
             timer += Time.deltaTime;
-            int index = (int)(timer / (1f / tranformSpeed));
-            index %= cardNames.Length;
-            nowGenerateCard.spriteName = cardNames[index];
-            if(timer > transformTime)
+            if(timer > cycleTime)
             {
+                //强制结束当前回合
+                TransformPlayer();
                 timer = 0;
-                isTransforming = false;
+            }
+            else if(cycleTime - timer <= 15)//剩余时间小于15秒
+            {
+                float scale = (cycleTime - timer) / 15;
+                wickpopeSprite.width = (int)(wickpopeWidth * scale);
             }
         }
-
     }
-    public void RandomGenerateCard()
+    private IEnumerator GenerateCarForHero1()
     {
-        //为何用协成创建？等待一帧 ，用GameObject创建的话
-        //用NGUI就不用
-        GameObject go = NGUITools.AddChild(gameObject, cardPrefab);
-        go.transform.position = fromCard.position;
-        nowGenerateCard = go.GetComponent<UISprite>();
-        iTween.MoveTo(go, toCard.position, 1f);
-        isTransforming = true;
+        //第一次发4张牌
+        for(int i = 0;i<4;i++)
+        {
+            GameObject cardGo = cardGenerator.RandomGenerateCard();
+            yield return new WaitForSeconds(2.25f);
+            myCard.AddCard(cardGo);
+        }
+    }
+    private void TransformPlayer()
+    {
+        
     }
 }
