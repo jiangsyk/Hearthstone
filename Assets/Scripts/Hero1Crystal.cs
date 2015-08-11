@@ -47,6 +47,25 @@ public class Hero1Crystal : MonoBehaviour
         {
             crystals[i].gameObject.SetActive(false);
         }
-
+    }
+    public void UpdateCrystalNumber()
+    {
+        if(totalNumber < maxNumber)
+        {
+            totalNumber++;
+        }
+        usableNumber = totalNumber;
+        UpdateShow();
+    }
+    //消耗水晶,返回表示是否成功
+    public bool GetCrystal(int number)
+    {
+        if(usableNumber >= number)
+        {
+            usableNumber -= number;
+            UpdateShow();
+            return true;
+        }
+        return false;
     }
 }

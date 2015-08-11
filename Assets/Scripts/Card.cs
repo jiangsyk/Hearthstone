@@ -8,6 +8,14 @@ using System.Collections;
  */
 public class Card : MonoBehaviour
 {
+    public int needCrystal;
+    public int harm;
+    public int hp;
+    public string cardName
+    {
+        get { return sprite.spriteName; }
+    }
+
     public UILabel harmLabel;
     public UILabel hpLabel;
     private UISprite sprite;
@@ -17,7 +25,7 @@ public class Card : MonoBehaviour
     }
     void Start()
     {
-
+        InitProp();
     }
     void Update()
     {
@@ -33,11 +41,33 @@ public class Card : MonoBehaviour
     {
         if(isPressed)
         {
-            DesCard.instance.ShowCard(sprite.spriteName);
+            DesCard.instance.ShowCard(cardName);
         }
         else
         {
 
         }
+    }
+    public void ResetPos()
+    {
+        harmLabel.GetComponent<UIAnchor>().enabled = true;
+        hpLabel.GetComponent<UIAnchor>().enabled = true;
+    }
+    private void ResetShow()
+    {
+        harmLabel.text = harm.ToString();
+        hpLabel.text = hp.ToString();
+    }
+    private void InitProp()
+    {
+        /*
+        string[] nameArr = cardName.Split('_');
+        needCrystal = int.Parse(nameArr[1]);
+        harm = int.Parse(nameArr[2]);
+        hp = int.Parse(nameArr[3]);
+        */
+        needCrystal = cardName[5] - '0';
+        harm = cardName[7] - '0';
+        hp = cardName[9] - '0';
     }
 }

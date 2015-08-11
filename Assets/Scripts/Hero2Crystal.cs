@@ -10,6 +10,7 @@ public class Hero2Crystal : MonoBehaviour
 {
     public int usableNumber = 1;
     public int totalNumber = 1;
+    public int maxNumber = 10;
 
     private UILabel label;
     void Start()
@@ -23,5 +24,26 @@ public class Hero2Crystal : MonoBehaviour
     public void UpdateShow()
     {
         label.text = usableNumber + "/" + totalNumber;
+    }
+
+    public void UpdateCrystalNumber()
+    {
+        if(totalNumber < maxNumber)
+        {
+            totalNumber++;
+        }
+        usableNumber = totalNumber;
+        UpdateShow();
+    }
+    //消耗水晶,返回表示是否成功
+    public bool GetCrystal(int number)
+    {
+        if(usableNumber >= number)
+        {
+            usableNumber -= number;
+            UpdateShow();
+            return true;
+        }
+        return false;
     }
 }

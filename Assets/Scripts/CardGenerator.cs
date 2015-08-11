@@ -43,7 +43,8 @@ public class CardGenerator : MonoBehaviour
                 isTransforming = false;
 
                 //随机生成一个
-                string cardName = cardNames[Random.Range(0,cardNames.Length)];
+                //string cardName = cardNames[Random.Range(0,cardNames.Length)];
+                string cardName = cardNames[Random.Range(0,13)];
                 nowGenerateCard.spriteName = cardName;
             }
         }
@@ -54,6 +55,7 @@ public class CardGenerator : MonoBehaviour
         //为何用协成创建？等待一帧 ，用GameObject创建的话
         //用NGUI就不用
         GameObject go = NGUITools.AddChild(gameObject, cardPrefab);
+        go.GetComponent<BoxCollider>().enabled = false;
         go.transform.position = fromCard.position;
         nowGenerateCard = go.GetComponent<UISprite>();
         iTween.MoveTo(go, toCard.position, 1f);

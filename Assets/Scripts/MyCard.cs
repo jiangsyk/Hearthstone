@@ -25,22 +25,26 @@ public class MyCard : MonoBehaviour
         Vector3 toPosition = card01.position + new Vector3(xOffset * cards.Count, 0, 0);
         go.GetComponent<UISprite>().width = 80;
         go.GetComponent<Card>().SetDepth(startDepth);
+        go.GetComponent<Card>().ResetPos();
+        go.GetComponent<BoxCollider>().enabled = true;
+        go.transform.parent = transform;
         startDepth += 3;
 
         iTween.MoveTo(go, toPosition, 1f);
         cards.Add(go);
+    }
+    //出牌删除
+    public void RemoveCard(GameObject go)
+    {
+        cards.Remove(go);
+        UpdateShow();
     }
     public void LoseCard()
     {
         int index = Random.Range(0, cards.Count);
         Destroy(cards[index]);
         cards.RemoveAt(index);
-
-        for(;index < cards.Count;index++)
-        {
-            Vector3 toPosition = card01.position + new Vector3(xOffset * index, 0, 0);
-            iTween.MoveTo(cards[index], toPosition, 0.5f);
-        }
+        UpdateShow();
     }
 
     void Start()
@@ -55,6 +59,14 @@ public class MyCard : MonoBehaviour
         if(Input.GetKeyDown(KeyCode.W))
         {
             LoseCard();
+        }
+    }
+    public void UpdateShow()
+    {
+        for (int i = 0; i < cards.Count; i++)
+        {
+            Vector3 toPosition = card01.position + new Vector3(xOffset * i, 0, 0);
+            iTween.MoveTo(cards[i], toPosition, 0.5f);
         }
     }
 }
