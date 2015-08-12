@@ -26,7 +26,7 @@ public class HistoryCard : MonoBehaviour
     {
         if(Input.GetButtonDown("Fire1"))
         {
-            StartCoroutine(AddCard());
+         //   StartCoroutine(AddCard());
         }
     }
     public IEnumerator AddCard()

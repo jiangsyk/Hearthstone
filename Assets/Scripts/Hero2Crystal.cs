@@ -16,6 +16,8 @@ public class Hero2Crystal : MonoBehaviour
     void Start()
     {
         label = GetComponent<UILabel>();
+
+        GameController.instance.OnNewRound += this.OnNewRound;
     }
     void Update()
     {
@@ -45,5 +47,12 @@ public class Hero2Crystal : MonoBehaviour
             return true;
         }
         return false;
+    }
+    public void OnNewRound(string heroName)
+    {
+        if(heroName == "hero2")
+        {
+            UpdateCrystalNumber();
+        }
     }
 }

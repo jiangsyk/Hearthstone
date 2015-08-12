@@ -22,6 +22,8 @@ public class StartMenu : MonoBehaviour
 
     void Start()
     {
+     //   Screen.SetResolution(1100, 700, false);
+
         movTexture.loop = false;
         movTexture.Play();
 

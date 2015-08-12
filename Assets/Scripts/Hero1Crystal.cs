@@ -14,10 +14,15 @@ public class Hero1Crystal : MonoBehaviour
 
     public UISprite[] crystals;
     UILabel numLabel;
-    void Start()
+
+    void Awake()
     {
         numLabel = GetComponent<UILabel>();
         maxNumber = crystals.Length;
+    }
+    void Start()
+    {
+        GameController.instance.OnNewRound += OnNewRound;
     }
     void Update()
     {
@@ -67,5 +72,12 @@ public class Hero1Crystal : MonoBehaviour
             return true;
         }
         return false;
+    }
+    public void OnNewRound(string heroName)
+    {
+        if(heroName == "hero1")
+        {
+            UpdateCrystalNumber();
+        }
     }
 }

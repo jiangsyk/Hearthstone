@@ -37,6 +37,8 @@ public class CardGenerator : MonoBehaviour
             int index = (int)(timer / (1f / tranformSpeed));
             index %= cardNames.Length;
             nowGenerateCard.spriteName = cardNames[index];
+            nowGenerateCard.GetComponent<Card>().InitProp();
+
             if(timer > transformTime)
             {
                 timer = 0;
@@ -46,6 +48,7 @@ public class CardGenerator : MonoBehaviour
                 //string cardName = cardNames[Random.Range(0,cardNames.Length)];
                 string cardName = cardNames[Random.Range(0,13)];
                 nowGenerateCard.spriteName = cardName;
+                nowGenerateCard.GetComponent<Card>().InitProp();
             }
         }
 

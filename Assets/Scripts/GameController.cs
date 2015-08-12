@@ -14,9 +14,16 @@ public enum GameState
  */
 public class GameController : MonoBehaviour
 {
+    public static GameController instance;
+
     public GameState state = GameState.PlayCard;
     public float cycleTime = 60f;
     public MyCard myCard;
+    public EnemyCard enemyCard;
+
+    public int roundIndex = 0;
+    public delegate void OnNewRoundEvent(string heroName);//控制转换
+    public event OnNewRoundEvent OnNewRound;
 
     public float timer = 0;
     private UISprite wickpopeSprite;
@@ -32,6 +39,8 @@ public class GameController : MonoBehaviour
         wickpopeSprite.width = 0;
 
         cardGenerator = GetComponent<CardGenerator>();
+
+        instance = this;
     }
     void Start()
     {
@@ -65,9 +74,52 @@ public class GameController : MonoBehaviour
             yield return new WaitForSeconds(2.25f);
             myCard.AddCard(cardGo);
         }
+        //敌人发4张牌
+        for(int i = 0;i<4;i++)
+        {
+            GameObject cardGo = cardGenerator.RandomGenerateCard();
+            yield return new WaitForSeconds(2.25f);
+            enemyCard.AddCard(cardGo);
+        }
+
+        state = GameState.PlayCard;
+        timer = 0;
     }
-    private void TransformPlayer()
+    public void TransformPlayer()//转变发牌方
     {
+        currentHeroName = currentHeroName == "hero1" ? "hero2" : "hero1";
+        roundIndex++;
+        timer = 0;
+        OnNewRound(currentHeroName);
         
+        //给当前回合发2张
+        if(roundIndex >= 2)
+        {
+            StartCoroutine(DealCard());
+        }
+    }
+    IEnumerator DealCard()
+    {
+        state = GameState.CardGenerating;
+        if(currentHeroName == "hero1")
+        {
+            for (int i = 0; i < 2; i++)
+            {
+                GameObject cardGo = cardGenerator.RandomGenerateCard();
+                yield return new WaitForSeconds(2.25f);
+                myCard.AddCard(cardGo);
+            }
+        }
+        else
+        {
+            for (int i = 0; i < 2; i++)
+            {
+                GameObject cardGo = cardGenerator.RandomGenerateCard();
+                yield return new WaitForSeconds(2.25f);
+                enemyCard.AddCard(cardGo);
+            }
+        }
+        state = GameState.PlayCard;
+        timer = 0;
     }
 }

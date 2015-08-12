@@ -22,6 +22,7 @@ public class FightCard : MonoBehaviour
     public void AddCard(GameObject go)
     {
         go.transform.parent = this.transform;
+        go.GetComponent<BoxCollider>().enabled = false;
         cardList.Add(go);
 
         Vector3 pos = CalcPosition();

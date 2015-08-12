@@ -9,9 +9,13 @@ using System.Collections;
 public class EndButton : MonoBehaviour
 {
     UILabel label;
-    void Start()
+    void Awake()
     {
         label = GetComponentInChildren<UILabel>();
+    }
+    void Start()
+    {
+        GameController.instance.OnNewRound += OnNewRound;
     }
     void Update()
     {
@@ -19,6 +23,17 @@ public class EndButton : MonoBehaviour
     }
     public void OnEndButtonClick()
     {
-        label.text = "对方回合";
+        if(label.text == "结束回合")
+        {
+            label.text = "对方回合";
+            GameController.instance.TransformPlayer();
+        }
+    }
+    private void OnNewRound(string heroName)
+    {
+        if(heroName == "hero1")
+        {
+            label.text = "结束回合";
+        }
     }
 }

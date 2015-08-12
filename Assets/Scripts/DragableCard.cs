@@ -26,7 +26,11 @@ public class DragableCard : UIDragDropItem
                 fightCard.AddCard(gameObject);
             }
             else
+            {
+
+                print("水晶不足！");
                 transform.parent.GetComponent<MyCard>().UpdateShow();
+            }
         }
         else
         {

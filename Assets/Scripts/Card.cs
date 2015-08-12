@@ -25,7 +25,6 @@ public class Card : MonoBehaviour
     }
     void Start()
     {
-        InitProp();
     }
     void Update()
     {
@@ -58,7 +57,7 @@ public class Card : MonoBehaviour
         harmLabel.text = harm.ToString();
         hpLabel.text = hp.ToString();
     }
-    private void InitProp()
+    public void InitProp()
     {
         /*
         string[] nameArr = cardName.Split('_');
@@ -69,5 +68,7 @@ public class Card : MonoBehaviour
         needCrystal = cardName[5] - '0';
         harm = cardName[7] - '0';
         hp = cardName[9] - '0';
+
+        ResetShow();
     }
 }
